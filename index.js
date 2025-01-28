@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const User = require("./db/schemas/user-schema");
+const Exercise = require("./db/schemas/exercise-schema");
 
 mongoose.connect(
   `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.2laut.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
@@ -38,6 +39,20 @@ app.get("/api/users/:_id/logs", async (req, res, next) => {
 
 app.post("/api/users/:id/exercises", async (req, res, next) => {
   try {
+    const { description, duration, date } = req.body;
+
+    const unixDate = new Date(date).getTime() / 1000;
+
+    const user = await User.findById(req.params.id);
+
+    const exercise = await Exercise.create({
+      username: user.username,
+      date: unixDate,
+      description,
+      duration,
+    });
+
+    res.json(exercise);
   } catch (err) {}
 });
 
