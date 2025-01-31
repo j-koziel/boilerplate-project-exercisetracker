@@ -33,7 +33,32 @@ app.post("/api/users", async (req, res, next) => {
 
 app.get("/api/users/:_id/logs", async (req, res, next) => {
   try {
-    const user = await User.find({ _id: req.params._id });
+    const user = await User.findById(req.params._id);
+    const query = req.query;
+
+    const from = query.from ? new Date(query.from) : new Date(0);
+    const to = query.to ? new Date(query.to) : new Date(0);
+
+    const exercises = (await Exercise.find({ username: user.username }))
+      .filter((exercise) => {
+        return exercise.date >= from && exercise.date <= to;
+      })
+      .slice(0, query.limit)
+      .map((exercise) => {
+        return {
+          ...exercise._doc,
+          date: exercise.date.toDateString(),
+        };
+      });
+
+    const response = {
+      _id: user._id,
+      username: user.username,
+      count: exercises.length,
+      log: exercises,
+    };
+
+    res.json(response);
   } catch (err) {}
 });
 
@@ -41,13 +66,11 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
   try {
     const { description, duration, date } = req.body;
 
-    const unixDate = new Date(date).getTime() / 1000;
-
     const user = await User.findById(req.params.id);
 
     const exercise = await Exercise.create({
       username: user.username,
-      date: unixDate,
+      date: new Date(date),
       description,
       duration,
     });
