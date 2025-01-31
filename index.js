@@ -75,7 +75,8 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
       duration,
     });
 
-    res.json(exercise);
+    const response = { ...exercise._doc, date: exercise.date.toDateString() };
+    res.json(response);
   } catch (err) {}
 });
 
