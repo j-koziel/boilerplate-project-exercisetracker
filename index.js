@@ -90,7 +90,6 @@ app.get("/api/users/:_id/logs", async (req, res, next) => {
 
 app.post("/api/users/:id/exercises", async (req, res, next) => {
   try {
-    console.log(req.body);
     const { description, duration } = req.body;
 
     const date = req.body.date ? new Date(req.body.date) : new Date(Date.now());
@@ -109,8 +108,9 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
       date: exercise.date.toDateString(),
       description,
       duration,
-      _id: user._id,
+      _id: req.params.id,
     };
+    console.log(response);
 
     res.json(response);
   } catch (err) {
