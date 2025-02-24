@@ -100,14 +100,14 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
       username: user.username,
       date,
       description,
-      duration,
+      duration: parseInt(duration),
     });
 
     const response = {
       username: user.username,
       date: exercise.date.toDateString(),
       description,
-      duration,
+      duration: parseInt(duration),
       _id: req.params.id,
     };
     console.log(response);
