@@ -92,6 +92,10 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
   try {
     const { description, duration, date } = req.body;
 
+    if (!description || !duration || !date) {
+      return res.json({ error: "Please fill in all required fields" });
+    }
+
     const user = await User.findById(req.params.id);
 
     const exercise = await Exercise.create({
