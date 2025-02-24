@@ -97,7 +97,7 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
 
     const exercise = await Exercise.create({
       username: user.username,
-      date: new Date(date),
+      date: new Date(date) || new Date(Date.now()),
       description,
       duration,
     });
@@ -105,6 +105,7 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
     const response = { ...exercise._doc, date: exercise.date.toDateString() };
     res.json(response);
   } catch (err) {
+    console.log(err);
     res.json({ error: err.message });
   }
 });
