@@ -25,7 +25,9 @@ app.get("/api/users", async (req, res, next) => {
   try {
     const users = await User.find({});
     res.json(users);
-  } catch (err) {}
+  } catch (err) {
+    res.json({ error: err.message });
+  }
 });
 
 app.post("/api/users", async (req, res, next) => {
@@ -35,7 +37,9 @@ app.post("/api/users", async (req, res, next) => {
     const user = await User.create({ username });
 
     res.json(user);
-  } catch (err) {}
+  } catch (err) {
+    res.json({ error: err.message });
+  }
 });
 
 app.get("/api/users/:_id/logs", async (req, res, next) => {
@@ -79,7 +83,9 @@ app.get("/api/users/:_id/logs", async (req, res, next) => {
     };
 
     res.json(response);
-  } catch (err) {}
+  } catch (err) {
+    res.json({ error: err.message });
+  }
 });
 
 app.post("/api/users/:id/exercises", async (req, res, next) => {
@@ -97,7 +103,9 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
 
     const response = { ...exercise._doc, date: exercise.date.toDateString() };
     res.json(response);
-  } catch (err) {}
+  } catch (err) {
+    res.json({ error: err.message });
+  }
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
