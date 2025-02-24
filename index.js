@@ -104,7 +104,14 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
       duration,
     });
 
-    const response = { ...exercise._doc, date: exercise.date.toDateString() };
+    const response = {
+      username: user.username,
+      date: exercise.date.toDateString(),
+      description,
+      duration,
+      _id: user._id,
+    };
+
     res.json(response);
   } catch (err) {
     console.log(err);
