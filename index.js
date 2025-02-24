@@ -110,11 +110,9 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
       duration: parseInt(duration),
       _id: req.params.id,
     };
-    console.log(response);
 
     res.json(response);
   } catch (err) {
-    console.log(err);
     res.json({ error: err.message });
   }
 });
