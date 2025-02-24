@@ -90,11 +90,8 @@ app.get("/api/users/:_id/logs", async (req, res, next) => {
 
 app.post("/api/users/:id/exercises", async (req, res, next) => {
   try {
+    console.log(req.body);
     const { description, duration, date } = req.body;
-
-    if (!description || !duration || !date) {
-      throw new Error("These fields are required");
-    }
 
     const user = await User.findById(req.params.id);
 
