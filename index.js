@@ -91,13 +91,15 @@ app.get("/api/users/:_id/logs", async (req, res, next) => {
 app.post("/api/users/:id/exercises", async (req, res, next) => {
   try {
     console.log(req.body);
-    const { description, duration, date } = req.body;
+    const { description, duration } = req.body;
+
+    const date = req.body.date ? new Date(req.body.date) : new Date(Date.now());
 
     const user = await User.findById(req.params.id);
 
     const exercise = await Exercise.create({
       username: user.username,
-      date: new Date(date) || new Date(Date.now()),
+      date,
       description,
       duration,
     });
