@@ -93,7 +93,7 @@ app.post("/api/users/:id/exercises", async (req, res, next) => {
     const { description, duration, date } = req.body;
 
     if (!description || !duration || !date) {
-      return res.json({ error: "Please fill in all required fields" });
+      throw new Error("These fields are required");
     }
 
     const user = await User.findById(req.params.id);
